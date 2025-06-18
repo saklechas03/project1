@@ -70,3 +70,18 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities{
+  .gradient{
+
+    @apply bg-gradient-to-br from-blue-600 to-purple-600; 
+    /* this is gradient effect that shows color from blue to purple */
+
+  }
+
+  .gradient-title {
+    @apply gradient font-extrabold tracking-tighter pr-2 pb-2 text-transparent bg-clip-text;
+
+  }
+}
+
