@@ -1,9 +1,9 @@
 "use client";
-import { createTransaction } from '@/actions/transaction';
+import { createTransaction, updateTransaction } from '@/actions/transaction';
 import { transactionSchema } from '@/app/lib/schema';
 import useFetch from '@/hooks/use-fetch';
 import { zodResolver } from '@hookform/resolvers/zod';
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useForm } from 'react-hook-form';
 
 
@@ -23,10 +23,13 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import { format } from 'date-fns';
-import { CalendarIcon } from 'lucide-react';
+import { CalendarIcon, Loader2 } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
 import { Switch } from '@/components/ui/switch';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { toast } from 'sonner';
+import ReciptScanner from './recipt-scanner';
 
 
 
@@ -39,11 +42,36 @@ import { Switch } from '@/components/ui/switch';
 
 
 
-const AddTransactionform = ({accounts,categories}) => {
+
+const AddTransactionform = ({accounts,categories,editMode=false,initialData = null,}) => {
+
+  const router = useRouter();
+
+  const searchParams = useSearchParams();
+  const editId=searchParams.get("edit");
+
+
+
+
+
+
 const {register,setValue,handleSubmit,formState:{errors},watch,getValues,reset}=
  useForm({
   resolver:zodResolver(transactionSchema),
-  defaultValues:{
+  defaultValues: editMode && initialData ?
+  
+  {
+            type: initialData.type,
+            amount: initialData.amount.toString(),
+            description: initialData.description,
+            accountId: initialData.accountId,
+            category: initialData.category,
+            date: new Date(initialData.date),
+            isRecurring: initialData.isRecurring,
+            ...(initialData.recurringInterval && {
+              recurringInterval: initialData.recurringInterval,
+            }),
+          }:{
 
     type: "EXPENSE" , 
     amount: "",
@@ -56,9 +84,9 @@ const {register,setValue,handleSubmit,formState:{errors},watch,getValues,reset}=
 
  const {
   loading: transactionLoading,
-  fn: transctionFn,
+  fn: transactionFn,
   data: transactionResult,
- } = useFetch(createTransaction);
+ } = useFetch(editMode ? updateTransaction : createTransaction);
 
 const type = watch("type");
 const isRecurring = watch("isRecurring");
@@ -68,12 +96,60 @@ const date = watch("date");
 const filteredCategories = categories.filter((category)=> category.type === type); // i.e categories will be shown according to the type i.e for expense and income categories would be different
 
 
+const onSubmit= async (data) =>{
+
+const formData ={
+  ...data,
+  amount: parseFloat(data.amount),
+};
+
+
+if(editMode){
+  transactionFn(editId,formData);
+}else{
+transactionFn(formData);
+}
+};
+
+useEffect(() => {
+  if (transactionResult?.success && !transactionLoading) {
+    toast.success(editMode ? "Transaction updated successfully" : "Transaction created successfully" );
+    reset();
+    router.push(`/account/${transactionResult.data.accountId}`);
+  }
+}, [transactionResult, transactionLoading, editMode]);
+
+const handleScanComplete =(scannedData)=>{
+if(scannedData){
+
+  setValue("amount" , scannedData.amount.toString());
+  setValue("date" , new Date(scannedData.date));
+  if(scannedData.description){
+
+    
+  setValue("description" , scannedData.description);
+    
+  }
+
+  if(scannedData.category){
+    setValue("category" , scannedData.category);
+  }
+
+
+}
+
+};
+
  return (
 
-  <form className="space-y-6">
+  <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
 
 
      {/* AI RECIPT SCANNER */}
+
+
+
+     { !editMode && <ReciptScanner onScanComplete={handleScanComplete}/> }
 
 
 
@@ -234,7 +310,7 @@ const filteredCategories = categories.filter((category)=> category.type === type
   <div className='space-y-0.5'>
 
     <label htmlFor='balance' className='text-sm font-medium cursor-pointer'>Recurring Transaction</label>
-  <p className='text-sm text-muted-foreground'>This account will be selected by default for transactions </p>
+  <p className='text-sm text-muted-foreground'>Set up a recurring schedule for this transaction </p>
 
   </div>
   
@@ -244,6 +320,70 @@ const filteredCategories = categories.filter((category)=> category.type === type
     />
      </div>
 
+
+    {isRecurring && (
+    <div className="space-y-2">
+
+   <label className="text-sm font-medium">Recurring Interval</label>
+   <Select onValueChange={(value)=> setValue("recurringInterval",value)}
+    defaultValue={getValues("recurringInterval")}>
+  <SelectTrigger>
+    <SelectValue placeholder="Select Interval" />
+  </SelectTrigger>
+  <SelectContent>
+   <SelectItem value="DAILY">Daily</SelectItem>
+              <SelectItem value="WEEKLY">Weekly</SelectItem>
+              <SelectItem value="MONTHLY">Monthly</SelectItem>
+              <SelectItem value="YEARLY">Yearly</SelectItem>
+   
+  </SelectContent>
+</Select>
+
+
+{errors.recurringInterval && (
+  <p className='text-sm text-red-500'>{errors.recurringInterval.message}</p>
+)}
+
+ </div>
+    
+)}
+
+
+<div>
+
+  <Button
+  
+  type = "button"
+  variant="outline"
+  className="w-full"
+  onClick={()=> router.back()}
+  
+>
+  Cancel
+  </Button>
+  <Button  type="submit" className="w-full" disabled={transactionLoading}>
+    
+    {transactionLoading ? (
+
+     <>
+     
+     <Loader2 className='mr-2 h-4 w-4 animate-spin'/>
+     {editMode ? "Updating..." : "Creating..."}
+    
+    </>
+
+
+    ): editMode ? (
+
+      "Update Transaction"
+
+    ):(
+      "Create Transaction"
+    )}
+    
+</Button>
+
+</div>
 
 
 

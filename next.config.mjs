@@ -9,6 +9,12 @@ const nextConfig = {
       },
     ],
   },
+
+  experimental:{
+    serverActions:{
+      bodySizeLimit:"5mb",  //for images in ai reciept
+    },
+  },
  
 };
 

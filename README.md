@@ -785,6 +785,39 @@ it is used to build the accounts page.
 2. in already created transaction folder in main .. create another folder _components and a file named - transaction-form.jsx.
 3. create schema for transactions in schema.js in lib folder.
 4. work with these above files and page.jsx of transaction folder.
+5. we want to limit our transactions to 10 so we keep a check using arcjet and userId for specific user.So install arcjet and create arcjet.js in lib folder.
+
+
+
+
+
+//// AI RECIEPT SCANNER ///
+
+1. change the settings of next.config.mjs for images.
+2. generate api key for gemini.
+3. use gemini pricing models and read about it.
+4. we are using gemini-1.5-flash . read about the request it provides.
+5. create recipt-scanner.jsx file in _components foler of transaction folder.
+6. work with logic in transactionform.jsx and above file.
+7. add animation in it by defining some logic in global css.
+
+
+
+//  RECURRING TRANSACTION WORKING ///
+
+1. it is done through page.jsx in transaction , transaction.form.jsx and transaction.js, function.js,route.js.
+
+
+
+/// GENERATE MONTHLY REPORTS    ////
+
+1. it will give the user the reports as weel as some tips how to save the money.
+2. 
+
+
+
+
+
 
 
 
