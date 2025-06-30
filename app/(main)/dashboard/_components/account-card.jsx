@@ -1,4 +1,6 @@
-import React from 'react';
+
+"use client";
+import React, { useEffect } from 'react';
 import {
   Card,
 
@@ -26,7 +28,7 @@ const{
   error,
 } = useFetch(updateDefaultAccount);
 
-const handleDefaultChange =async()=>{
+const handleDefaultChange =async(event)=>{
 
 event.preventDefault();
 if(isDefault){
@@ -37,6 +39,27 @@ if(isDefault){
  await updateDefaultFn(id);
 };
 
+useEffect(()=>{
+
+  if(updatedAccount?.success){
+    toast.success("Default account updated successfully");
+  }
+}, [updatedAccount,updateDefaultLoading]);
+
+useEffect(()=>{
+
+  if(error){
+    toast.error(error.message || "Failed to update default account");
+  }
+}, [error]);
+
+
+
+
+
+
+
+
   return (
     
       <Card className="hover:shadow-md transition-shadow group relative">
@@ -44,7 +67,7 @@ if(isDefault){
   <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2" >
     <CardTitle className="text-sm font-medium capitalize">{name}</CardTitle>
     <Switch checked={isDefault} onClick={handleDefaultChange}
-    disable={updateDefaultLoading}/> {/* this automatically switches the account that is default i.e if we have 2 accounts .. then it automatically makes teh switch button i.e slider to the right i.e make it true for the default account .. now if we switch on the button manually fro another account , then it should make the it as default and remove the previous one and update the page..so it is done by the server action */}
+    disabled={updateDefaultLoading}/> {/* this automatically switches the account that is default i.e if we have 2 accounts .. then it automatically makes teh switch button i.e slider to the right i.e make it true for the default account .. now if we switch on the button manually fro another account , then it should make the it as default and remove the previous one and update the page..so it is done by the server action */}
    
   </CardHeader>
   <CardContent>

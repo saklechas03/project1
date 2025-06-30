@@ -731,8 +731,71 @@ It tells the browser and the input field that:
 
  Switch checked={isDefault}/>{/* this automatically switches the account that is default i.e if we have 2 accounts .. then it automatically makes teh switch button i.e slider to the right i.e make it true for the default account .. now if we switch on the button manually fro another account , then it should make the it as default and remove the previous one and update the page..so it is done by the server action */}
 
+4. use account[id] folder - page.jsx to fetch info about each account using its params.id i.e the local host id.
+it is used to build the accounts page.
 
- 4.
+
+
+////////        ACCOUNTS PAGE ////////////////
+
+1.create seed.js in actions folder. for the dummy transactions to show on accounts page by installing date-fns using npm i date-fns --legacy-peer-deps fro storing dates efficiently in next js.
+2.create api folder in app folder to call the seed function.
+3.create seed folder - route.js - this is an api.
+4.create a new folder _components in account folder of (main) and then create transaction-table.jsx fro creating the transaction table.
+4.create categories.js in data folder.
+5.write all fuctionalities and everything in transaction table.
+6. write the bulk delete transaction code in server from acounts.js and then implement the logic relating it in transacation table.
 
 
 
+
+///CHARTS IN ACCOUNT PAGE ///
+
+1. create account-charts.jsx in _components folder in main folder.
+2. work along the logic in both the above file and page.jsx in [id] to built  chart.
+3.install recharts npm i recharts --legacy-peer-deps.
+
+//COMING BACK TO DASHBOARD PAGE FOR IMPLEMENTING THE BUDGET AND INGEST FUNCTION OF DIALY REMINDERS OF BUDGET
+
+1. create new budget.js in action for server.
+2.create another file in _componenets folder of dashbaord folder to create file - budget.jsx 
+3. implement logic in both budget.js and budget-progress.jsx and page.jsx to make the card for budget.
+4.install inngest - 3.27.4 and run commmand - npx inngest-cli@latest dev
+5. make inngest folder in api folder of app folder ..to create the file - route.js.
+6. make an inngest folder in lib too to make a file - client.js.
+7. set up in both files according to logic and documentation from the site.
+8. make functions.js in lib folder - inngest
+9.remember for running these two local host we would require two new terminals working simultaneously.
+10.Now work on these three files for the inngest logic.
+
+// EMAIL//
+1.go to react - email and follow the stpes in doc ..bt install email commponents - 0.0.30
+2. create email folder and template file to create the template for our email ..that could be seen when we run command np run email and copy the localhost in the web browser to see our template.
+3. create the template in the template.jsx.
+4. install resend email bt first create account on resend email and make a api key for it then install it using docs and legacy peer deps.
+4.create a new server file in actions named as - send-email.js.
+5. npx inngest-cli dev -u http://localhost:3000/api/inngest
+
+
+
+
+///  TRANSACTION FORMS ///
+
+1. create transaction.js server file in actions folder.
+2. in already created transaction folder in main .. create another folder _components and a file named - transaction-form.jsx.
+3. create schema for transactions in schema.js in lib folder.
+4. work with these above files and page.jsx of transaction folder.
+
+
+
+
+
+
+
+
+
+
+ 
+
+
+ 
