@@ -828,6 +828,13 @@ it is used to build the accounts page.
 1. make changes in mddleware for it.
 
 
+/////    DEPLOYMENT  ///////
+
+1. go to package.json and add postinstall.
+2. make git commit 
+3. 
+
+
 
 
 

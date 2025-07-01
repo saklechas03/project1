@@ -19,7 +19,7 @@ const serializeTransaction = (obj)=>{
 };
 
 
-export async function createAccount(data){  //data is the name, type ,id etc fromthe accounts table  in prisma.
+export async function createAccount(data){  //data is the name, type ,id etc from the accounts table  in prisma.
   try{
 
 
