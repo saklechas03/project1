@@ -811,8 +811,21 @@ it is used to build the accounts page.
 
 /// GENERATE MONTHLY REPORTS    ////
 
-1. it will give the user the reports as weel as some tips how to save the money.
-2. 
+1. it will give the user the reports as well as some tips how to save the money.
+2. work with route.js , template.jsx and function.js for generating ai based reports .
+
+
+
+///   DASHBOARD EXPENSE PIE CHART   /////
+
+1. work with dashbaord.js , page.jsx from dashboard folder.
+2. create transactions-overview file in _components folder of dashbaord folder to work with above files.
+
+
+
+//BOT PROTECTION AND ARCJUET SHEILD ///
+
+1. make changes in mddleware for it.
 
 
 
